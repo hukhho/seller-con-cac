@@ -31,11 +31,11 @@ const NewShipping = ({ isReturn, region, onCreated, onClick }) => {
   const createShippingOption = useAdminCreateShippingOption()
   const notification = useNotification()
 
-  useEffect(() => {
-    register("amount", { required: true })
-    register("requirements.max_subtotal.amount")
-    register("requirements.min_subtotal.amount")
-  }, [])
+  // useEffect(() => {
+  //   register("amount", { required: true })
+  //   register("requirements.max_subtotal.amount")
+  //   register("requirements.min_subtotal.amount")
+  // }, [])
 
   const handleAmountChange = (fieldName: string, amount?: number) => {
     setValue(fieldName, amount)
@@ -81,9 +81,7 @@ const NewShipping = ({ isReturn, region, onCreated, onClick }) => {
       data: options[optionIndex],
       region_id: region.id,
       profile_id: data.profile_id?.value,
-      requirements: reqs,
-      price_type: "flat_rate",
-      amount: data.amount,
+      price_type: "calculated",
       is_return: isReturn,
       provider_id,
       admin_only: adminOnly,
@@ -176,17 +174,7 @@ const NewShipping = ({ isReturn, region, onCreated, onClick }) => {
                 placeholder="New Shipping Option"
                 className="flex-grow"
               />
-              <CurrencyInput
-                currentCurrency={region.currency_code}
-                readOnly
-                size="small"
-              >
-                <CurrencyInput.AmountInput
-                  label="Price"
-                  onChange={(v) => handleAmountChange("amount", v)}
-                  amount={undefined}
-                />
-              </CurrencyInput>
+              <div></div>
             </div>
             <div className="mt-large mb-xlarge">
               <label className="inline-flex items-center inter-base-semibold">
