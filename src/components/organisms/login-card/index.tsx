@@ -1,10 +1,11 @@
 import { navigate } from "gatsby"
 import { useAdminLogin } from "medusa-react"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import Button from "../../fundamentals/button"
 import SigninInput from "../../molecules/input-signin"
 import api from "../../../services/api" // Import your api.js file
+import { delay } from "lodash"
 
 type FormValues = {
   email: string
@@ -19,19 +20,35 @@ const LoginCard: React.FC<LoginCardProps> = ({ toResetPassword }) => {
   const [isInvalidLogin, setIsInvalidLogin] = useState(false)
   const { register, handleSubmit, reset } = useForm<FormValues>()
   const login = useAdminLogin()
-  const onSubmit =  (values: FormValues) =>  {
+  useEffect(() => {
+    const check = async () => {
+      try {
+        const check = await api.auth.batch()
+        console.log("check in useEffect", check)
+      } catch (err) {
+        console.log("error")
+      }
+    }
+    check()
+  }, [])
+  const onSubmit = async (values: FormValues) => {
+    try {
+      const check = await api.auth.batch()
+      console.log("check", check)
+    } catch (err) {
+      console.log("error")
+    }
     login.mutate(values, {
-       onSuccess: async (login) => {
+      onSuccess: async (login) => {
         console.log("login success")
         console.log("login.response.header", login.response.headers)
         try {
-          const dataToken = await api.auth.token(values);
-          const access_token = dataToken.data.access_token;
+          const dataToken = await api.auth.token(values)
+          const access_token = dataToken.data.access_token
           console.log("access_token", dataToken.data.access_token)
-          const cookieString = `token=${access_token}`;
-          document.cookie = cookieString;
-
-        } catch(err) {
+          const cookieString = `token=${access_token}`
+          document.cookie = cookieString
+        } catch (err) {
           console.log("error")
         }
         // console.log(

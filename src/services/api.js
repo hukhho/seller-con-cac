@@ -63,6 +63,11 @@ export default {
       console.log("Calling token function with details:", details)
       return medusaRequest("POST", path, details)
     },
+    batch() {
+      const path = `/admin/batch-jobs?limit=100`
+      console.log("Calling batch job function")
+      return medusaRequest("GET", path)
+    },
     deauthenticate() {
       const path = `/admin/auth`
       console.log("Calling deauthenticate function")

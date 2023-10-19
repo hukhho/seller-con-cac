@@ -1,6 +1,6 @@
 import axios from "axios"
 
-let baseURL = "https://admin.sneakerss.net1"
+let baseURL = "https://admin.sneakerss.net"
 
 // deprecated
 if (process.env.GATSBY_STORE_URL) {
