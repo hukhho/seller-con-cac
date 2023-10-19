@@ -4,6 +4,7 @@ import React, { useState } from "react"
 import { useForm } from "react-hook-form"
 import Button from "../../fundamentals/button"
 import SigninInput from "../../molecules/input-signin"
+import api from "../../../services/api" // Import your api.js file
 
 type FormValues = {
   email: string
@@ -18,13 +19,29 @@ const LoginCard: React.FC<LoginCardProps> = ({ toResetPassword }) => {
   const [isInvalidLogin, setIsInvalidLogin] = useState(false)
   const { register, handleSubmit, reset } = useForm<FormValues>()
   const login = useAdminLogin()
-
-  const onSubmit = (values: FormValues) => {
+  const onSubmit =  (values: FormValues) =>  {
     login.mutate(values, {
-      onSuccess: () => {
-        navigate("/a/orders")
+       onSuccess: async (login) => {
+        console.log("login success")
+        console.log("login.response.header", login.response.headers)
+        try {
+          const dataToken = await api.auth.token(values);
+          const access_token = dataToken.data.access_token;
+          console.log("access_token", dataToken.data.access_token)
+          const cookieString = `token=${access_token}`;
+          document.cookie = cookieString;
+
+        } catch(err) {
+          console.log("error")
+        }
+        // console.log(
+        //   "login.response.header",
+        //   login.response.headers["set-cookie"]
+        // )
+        navigate("/a/products")
       },
       onError: () => {
+        console.log("error")
         setIsInvalidLogin(true)
         reset()
       },

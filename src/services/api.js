@@ -38,6 +38,7 @@ export default {
   apps: {
     authorize(data) {
       const path = `/admin/apps/authorizations`
+      console.log("Calling authorize function with data:", data)
       return medusaRequest("POST", path, data)
     },
 
@@ -49,14 +50,22 @@ export default {
   auth: {
     session() {
       const path = `/admin/auth`
+      console.log("Calling session authentication function")
       return medusaRequest("GET", path)
     },
     authenticate(details) {
       const path = `/admin/auth`
+      console.log("Calling authenticate function with details:", details)
       return medusaRequest("POST", path, details)
     },
-    deauthenticate(details) {
+    token(details) {
+      const path = `/admin/auth/token`
+      console.log("Calling token function with details:", details)
+      return medusaRequest("POST", path, details)
+    },
+    deauthenticate() {
       const path = `/admin/auth`
+      console.log("Calling deauthenticate function")
       return medusaRequest("DELETE", path)
     },
   },

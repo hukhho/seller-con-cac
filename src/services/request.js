@@ -1,6 +1,6 @@
 import axios from "axios"
 
-let baseURL = "http://localhost:9000"
+let baseURL = "https://admin.sneakerss.net1"
 
 // deprecated
 if (process.env.GATSBY_STORE_URL) {
@@ -21,7 +21,9 @@ export default function medusaRequest(method, path = "", payload = {}) {
     url: path,
     data: payload,
     json: true,
+    headers: { Cac: "cac" },
   }
+  console.log("medusaRequest: method", method, " options: ", options)
   return client(options)
 }
 
